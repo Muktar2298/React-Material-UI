@@ -2,17 +2,29 @@ import React from "react";
 import "./App.css";
 import Button from "@material-ui/core/Button";
 import News from "./components/News/News";
+import { useState,useEffect } from "react";
 
 function App() {
+
+  // --Data load --//
+   const [articles, setArticles] = useState([]);
+   useEffect(() => {
+     const url = 'https://newsapi.org/v2/top-headlines?country=us&apiKey=0213b1c28fde41868decb2845a6e7db3';
+     fetch(url)
+     .then(response => response.json())
+     .then(data => setArticles(data.articles));
+   }, [])
+
+  //  --return --//
   return (
     <div>
-      <Button variant="contained" color="primary">
-        Primary
-      </Button>
-      <Button variant="contained" color="secondary">
-  Secondary
-</Button>
-<News></News>
+        <h2>Headlines : {articles.length}</h2>
+
+        
+        {/* -- Dynamically read data or  map  the articles-- */}
+        {
+         articles.map(article => <News article={article}></News>)  //--pass article to News Component --//
+        }
     </div>
   );
 }
